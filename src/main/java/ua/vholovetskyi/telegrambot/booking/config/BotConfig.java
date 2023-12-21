@@ -1,4 +1,4 @@
-package ua.vholovetskyi.telegrambot.config;
+package ua.vholovetskyi.telegrambot.booking.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

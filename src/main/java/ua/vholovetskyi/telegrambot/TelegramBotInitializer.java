@@ -1,4 +1,4 @@
-package ua.vholovetskyi.telegrambot.service;
+package ua.vholovetskyi.telegrambot;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -7,10 +7,11 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import ua.vholovetskyi.telegrambot.booking.service.TelegramBotService;
 
 @Component
 @RequiredArgsConstructor
-public class TelegramBotInitializerService {
+public class TelegramBotInitializer {
 
     private final TelegramBotService telegramBotService;
 

@@ -1,0 +1,11 @@
+package ua.vholovetskyi.telegrambot.booking.handlers;
+
+public abstract class BaseCommandHandler implements CommandHandler{
+
+    @Override
+    public boolean supports(String name) {
+        return getCommandName().equals(name);
+    }
+
+    protected abstract String getCommandName();
+}
