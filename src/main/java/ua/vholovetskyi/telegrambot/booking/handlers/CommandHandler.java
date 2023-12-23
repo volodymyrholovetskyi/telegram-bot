@@ -2,7 +2,7 @@ package ua.vholovetskyi.telegrambot.booking.handlers;
 
 public interface CommandHandler {
 
-    boolean supports(String name);
+    boolean supports(String command);
 
-    ResponseMessage handle(UserInputCommand command);
+    ResponseMessage handle(UserInput command);
 }

@@ -1,13 +1,17 @@
 package ua.vholovetskyi.telegrambot.booking.validator;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PhoneNumberValidator implements Validator{
+public class PhoneNumberValidator implements Validator {
+    private static final String PHONE_NUMBER_REGEX = "^\\+?3?8?(0\\d{9})$";
+    private static final Pattern PHONE_NUMBER_PATTERN;
+
+    static {
+        PHONE_NUMBER_PATTERN = Pattern.compile(PHONE_NUMBER_REGEX);
+    }
+
     @Override
-    public boolean validate(String phoneNumber) {
-        Pattern pattern = Pattern.compile("^\\d{10}$");
-        Matcher matcher = pattern.matcher(phoneNumber);
-        return matcher.matches();
+    public boolean isValid(String phoneNumber) {
+        return PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches();
     }
 }
