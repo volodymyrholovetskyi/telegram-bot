@@ -1,6 +1,7 @@
 package ua.vholovetskyi.telegrambot.booking.handlers;
 
 import com.vdurmont.emoji.EmojiParser;
+import ua.vholovetskyi.telegrambot.booking.handlers.utils.Answer;
 import ua.vholovetskyi.telegrambot.user.dto.RegisteredUserDto;
 import ua.vholovetskyi.telegrambot.user.service.UserService;
 
@@ -8,18 +9,15 @@ import java.sql.Timestamp;
 
 public class StartCommandHandler extends BaseCommandHandler {
 
+    public static final String COMMAND_NAME = "/start";
     private final UserService userService;
-
     public StartCommandHandler(UserService userService) {
         this.userService = userService;
     }
-    public static final String COMMAND_NAME = "/start";
 
     @Override
     public ResponseMessage handle(UserInput input) {
-        final var blush = EmojiParser.parseToUnicode(":blush:");
-        final var answer = String.format("Hello, %s %s%nWelcome to our bot!" +
-                "%nUse the /help command to view a list of commands.", input.getFirstName(), blush);
+        final var answer = String.format(Answer.ANSWER_START_COMMAND, input.getFirstName(), Answer.BLUSH);
         if (!userService.existsByChatId(input.getChatId())) {
             userService.registered(new RegisteredUserDto(
                     input.getChatId(),

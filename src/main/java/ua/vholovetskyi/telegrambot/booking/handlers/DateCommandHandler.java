@@ -1,12 +1,17 @@
 package ua.vholovetskyi.telegrambot.booking.handlers;
 
+import ua.vholovetskyi.telegrambot.booking.handlers.utils.Answer;
 import ua.vholovetskyi.telegrambot.booking.validator.DateValidator;
-import ua.vholovetskyi.telegrambot.booking.validator.PhoneNumberValidator;
-import ua.vholovetskyi.telegrambot.booking.validator.Validator;
+import ua.vholovetskyi.telegrambot.user.service.UserService;
 
-public class DateCommandHandler extends BaseCommandHandler{
+public class DateCommandHandler extends BaseCommandHandler {
 
     public static final String COMMAND_NAME = "/date_of_visit";
+    private final UserService userService;
+    public DateCommandHandler(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     protected String getCommandName() {
         return COMMAND_NAME;
@@ -14,13 +19,11 @@ public class DateCommandHandler extends BaseCommandHandler{
 
     @Override
     public ResponseMessage handle(UserInput command) {
-
-        String answerError = "Date is invalid";
-        String answer = "Date is valid!!!";
         final var validator = new DateValidator();
-        if (!validator.isValid(command.getValue())) {
-            return new ResponseMessage(command.getChatId(), true, answerError);
+        if (command.getValue() == null || !validator.isValid(command.getValue())) {
+            final var answer = String.format(Answer.ANSWER_DATE_INVALID, command.getValue());
+            return new ResponseMessage(command.getChatId(), true, answer);
         }
-        return new ResponseMessage(command.getChatId(), false, answer);
+        return new ResponseMessage(command.getChatId(), false, Answer.ANSWER_DATE_VALID);
     }
 }

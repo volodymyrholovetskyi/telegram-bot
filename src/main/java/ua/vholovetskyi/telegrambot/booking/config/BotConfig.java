@@ -10,9 +10,9 @@ import org.springframework.context.annotation.PropertySource;
 @Data
 public class BotConfig {
 
-    @Value("${bot.name}")
+    @Value("${telegram.bot.name}")
     private String name;
-    @Value("${bot.token}")
+    @Value("${telegram.bot.token}")
     private String token;
 
 }

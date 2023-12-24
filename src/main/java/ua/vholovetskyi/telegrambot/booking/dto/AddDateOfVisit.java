@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AddDateOfVisit {
 
+    private Long chatId;
     private LocalDateTime dareOfVisit;
 }

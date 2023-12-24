@@ -14,12 +14,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "booking")
+@Table(name = "ticket")
 public class BookingTicket {
 
     @Id
     @GeneratedValue
     private Long bookingId;
-    private String name;
     private LocalDateTime dateOfVisit;
 }
