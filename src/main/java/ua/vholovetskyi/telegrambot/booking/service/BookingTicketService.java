@@ -1,17 +1,20 @@
 package ua.vholovetskyi.telegrambot.booking.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ua.vholovetskyi.telegrambot.booking.db.BookingTicketRepository;
-import ua.vholovetskyi.telegrambot.booking.service.dto.CreateBookingTicket;
+import ua.vholovetskyi.telegrambot.booking.service.dto.CreateTicketDto;
+import ua.vholovetskyi.telegrambot.user.model.User;
+import ua.vholovetskyi.telegrambot.user.service.UserService;
 
 @Component
 @RequiredArgsConstructor
 public class BookingTicketService {
+    private final UserService userService;
 
-    private final BookingTicketRepository ticketRepository;
-
-    public void saveBookingTicket(CreateBookingTicket bookingTicket) {
-
+    @Transactional
+    public void createTicket(CreateTicketDto ticketDto) {
+        User user = userService.findById(ticketDto.getChatId());
+        user.addTicker(ticketDto.toTicker());
     }
 }

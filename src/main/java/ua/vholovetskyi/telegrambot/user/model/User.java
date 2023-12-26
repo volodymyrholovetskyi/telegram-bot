@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ua.vholovetskyi.telegrambot.booking.model.BookingTicket;
+import ua.vholovetskyi.telegrambot.booking.model.Ticket;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +16,28 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_bot")
+@Table(name = "users")
 public class User {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatId;
     private String firstName;
     private String lastName;
-    private String phone;
+    private String phoneNumber;
     private Timestamp registeredAt;
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<BookingTicket> bookingTicket = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Ticket> tickets = new ArrayList<>();
+
+    public void addTicker(Ticket ticket) {
+        if (ticket != null) {
+            tickets.add(ticket);
+        }
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        if (phoneNumber != null) {
+            this.phoneNumber = phoneNumber;
+        }
+    }
 }

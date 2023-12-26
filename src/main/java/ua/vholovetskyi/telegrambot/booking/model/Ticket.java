@@ -1,10 +1,8 @@
 package ua.vholovetskyi.telegrambot.booking.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,12 +11,14 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "ticket")
-public class BookingTicket {
+public class Ticket {
 
     @Id
-    @GeneratedValue
-    private Long bookingId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ticketId;
+    private Long user_id;
     private LocalDateTime dateOfVisit;
 }

@@ -8,11 +8,12 @@ import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
-public class RegisteredUserDto {
+public class RegisteredUser {
 
     private Long chatId;
     private String firstName;
     private String lastName;
+
     private String phoneNumber;
     private Timestamp registeredAt;
 

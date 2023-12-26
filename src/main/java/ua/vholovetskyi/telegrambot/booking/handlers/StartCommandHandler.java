@@ -1,31 +1,22 @@
 package ua.vholovetskyi.telegrambot.booking.handlers;
 
-import com.vdurmont.emoji.EmojiParser;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import ua.vholovetskyi.telegrambot.booking.handlers.utils.Answer;
-import ua.vholovetskyi.telegrambot.user.dto.RegisteredUserDto;
 import ua.vholovetskyi.telegrambot.user.service.UserService;
-
-import java.sql.Timestamp;
 
 public class StartCommandHandler extends BaseCommandHandler {
 
     public static final String COMMAND_NAME = "/start";
     private final UserService userService;
+
     public StartCommandHandler(UserService userService) {
         this.userService = userService;
     }
 
     @Override
-    public ResponseMessage handle(UserInput input) {
-        final var answer = String.format(Answer.ANSWER_START_COMMAND, input.getFirstName(), Answer.BLUSH);
-        if (!userService.existsByChatId(input.getChatId())) {
-            userService.registered(new RegisteredUserDto(
-                    input.getChatId(),
-                    input.getFirstName(),
-                    input.getLastName(),
-                    new Timestamp(input.getRegisteredAt().getTime())));
-        }
-        return new ResponseMessage(input.getChatId(), false, answer);
+    public SendMessage handle(UserInput userInput) {
+        final var answer = String.format(Answer.MESSAGE_START_COMMAND, userInput.getFirstName(), Answer.BLUSH);
+        return new SendMessage(String.valueOf(userInput.getChatId()), answer);
     }
 
     @Override

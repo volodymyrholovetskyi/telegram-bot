@@ -1,35 +1,56 @@
 package ua.vholovetskyi.telegrambot.booking.handlers;
 
-import ua.vholovetskyi.telegrambot.booking.dto.AddDateOfVisit;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import ua.vholovetskyi.telegrambot.booking.handlers.utils.Answer;
-import ua.vholovetskyi.telegrambot.booking.service.BookingTicketService;
-import ua.vholovetskyi.telegrambot.booking.service.dto.CreateBookingTicket;
-import ua.vholovetskyi.telegrambot.booking.validator.PhoneNumberValidator;
 import ua.vholovetskyi.telegrambot.user.service.UserService;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactCommandHandler extends BaseCommandHandler {
-    public static final String COMMAND_NAME = "/myContact";
-    private final BookingTicketService ticketService;
-    public ContactCommandHandler(BookingTicketService ticketService) {
-        this.ticketService = ticketService;
-    }
 
-    @Override
-    public ResponseMessage handle(UserInput userInput) {
-        final var validator = new PhoneNumberValidator();
-        if (userInput.getValue() == null || validator.isValid(userInput.getValue())) {
-            final var error = String.format(Answer.ANSWER_CONTACT_INVALID, userInput.getValue());
-            return new ResponseMessage(userInput.getChatId(), true, error);
-        }
-        ticketService.saveBookingTicket(new CreateBookingTicket(userInput.getChatId(), LocalDateTime.parse(userInput.getValue())));
-        return new ResponseMessage(userInput.getChatId(), false, Answer.ANSWER_CONTACT_VALID);
-    }
+    public static final String COMMAND_NAME = "/register";
+    private final UserService userService;
 
+    public ContactCommandHandler(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected String getCommandName() {
         return COMMAND_NAME;
+    }
+
+    @Override
+    public SendMessage handle(UserInput userInput) {
+        boolean existsUser = userService.existsByChatId(userInput.getChatId());
+        if (existsUser) {
+            return new SendMessage(String.valueOf(userInput.getChatId()), Answer.MESSAGE_REGISTERED);
+        }
+        return buttonSendContact(userInput);
+    }
+
+    private SendMessage buttonSendContact(UserInput userInput) {
+        final var contactButton = new KeyboardButton("Send contact");
+        contactButton.setRequestContact(true);
+
+        KeyboardRow row = new KeyboardRow();
+        row.add(contactButton);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        keyboard.add(row);
+
+        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
+        markup.setKeyboard(keyboard);
+        markup.setResizeKeyboard(true);
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(userInput.getChatId());
+        sendMessage.setText("Click the \"Send contact\" button to register!");
+        sendMessage.setReplyMarkup(markup);
+        return sendMessage;
     }
 }

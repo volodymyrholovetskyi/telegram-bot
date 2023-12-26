@@ -1,5 +1,6 @@
 package ua.vholovetskyi.telegrambot.booking.handlers;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import ua.vholovetskyi.telegrambot.booking.handlers.utils.Answer;
 
 public class HelpCommandHandler extends BaseCommandHandler {
@@ -7,9 +8,9 @@ public class HelpCommandHandler extends BaseCommandHandler {
     public static final String COMMAND_NAME = "/help";
 
     @Override
-    public ResponseMessage handle(UserInput command) {
-        String answer = String.format(Answer.ANSWER_HELP_COMMAND);
-        return new ResponseMessage(command.getChatId(), false, answer);
+    public SendMessage handle(UserInput userInput) {
+        String answer = String.format(Answer.MESSAGE_HELP_COMMAND);
+        return new SendMessage(String.valueOf(userInput.getChatId()), answer);
     }
 
     @Override
