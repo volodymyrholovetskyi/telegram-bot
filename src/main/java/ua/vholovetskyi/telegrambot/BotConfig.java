@@ -1,18 +1,21 @@
-package ua.vholovetskyi.telegrambot.config;
+package ua.vholovetskyi.telegrambot;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
+/**
+ * @author Volodymyr Holovetskyi
+ * @version 1.0
+ * @since 2023-12-23
+ */
 @Configuration
-@PropertySource("application.properties")
 @Data
 public class BotConfig {
 
-    @Value("${bot.name}")
+    @Value("${telegram.bot.name}")
     private String name;
-    @Value("${bot.token}")
+    @Value("${telegram.bot.token}")
     private String token;
 
 }

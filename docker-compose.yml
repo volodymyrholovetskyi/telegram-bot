@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  spring_boot_app:
+    container_name: telegram-bot-app
+    image: telegram-bot:0.0.1-SNAPSHOT
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - postgresqldb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresqldb:7432/telegrambot
+      SPRING_DATASOURCE_USER: root
+      SPRING_DATASOURCE_PASSWORD: passw123
+    ports:
+      - "9080:8080"
+
+  postgresqldb:
+    container_name: postgresqldb
+    image: postgres:12.4
+    restart: always
+    environment:
+      POSTGRES_DB: telegrambot
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: passw123
+    ports:
+      - "7432:5432"
